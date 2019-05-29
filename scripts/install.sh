@@ -52,9 +52,6 @@ echo "Downloading Android SDK Tools"
 echo "Downloading Android Bulid Tools"
 "${SDKMANAGER}" 'build-tools;28.0.3'
 
-echo "Downloading Android Platform"
-"${SDKMANAGER}" 'platforms;android-9'
-
 echo "Downloading Android Image"
 if [ -z "$bits" ]
 then
@@ -82,19 +79,8 @@ fi
 #     fi
 # fi
 
-# Create an android emulator device
-echo "Creating emulator device."
-echo "no" | avdmanager create avd --package "${AVD_PACKAGE}" --name 'ionic-device' --device "android-28"
-cat >> "${HOME}/.android/avd/ionic-device.avd/config.ini" <<EOF
-hw.lcd.height=1280
-hw.lcd.width=720
-hw.lcd.density=240
-hw.ramSize=1536
-hw.device.name=Generic Ionic Device
-hw.gps=yes
-hw.gpu.enabled=yes
-hw.gpu.mode=auto
-EOF
+# Create an android virtual device
+"${BASEDIR}/scripts/create_ionic_avd.sh" "${AVD_PACKAGE}"
 
 # install Cordova
 echo "Installing Cordova."
