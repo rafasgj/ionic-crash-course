@@ -22,7 +22,7 @@ run_as_superuser() {
     shift 1
     if [ ! $EUID == 0 ]
     then
-        echo "Superuser priviledges required to execute $*."
+        echo "Superuser priviledges required to $*."
         sudo -E $cmd || exit 1
     fi
 

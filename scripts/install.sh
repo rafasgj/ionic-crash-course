@@ -46,12 +46,12 @@ fi
 # install Cordova
 echo "Installing Cordova."
 run_as_superuser "npm install -g cordova" "install Cordova"
-run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
+run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fix permissions"
 
 # install Ionic
 echo "Installing Ionic."
 run_as_superuser "npm install -g ionic" "install Ionic"
-run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
+run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fix permissions"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
