@@ -19,16 +19,16 @@ echo "Verifying instalation environment."
 echo "Installing Android Development Toolchain."
 
 echo "You must install a Java JDK version 8 or compatible."
+echo "Check its installation to set JAVA_HOME on 'scripts/env.sh'"
 if [ "$os" == "Linux" ]
 then
     echo "It is recommended that you use OpenJDK."
-    echo "Check its installation to set JAVA_HOME on 'scripts/env.sh'"
     echo 'It might be installed at /usr/lib/jvm/java-1.8.0-openjdk'
     if [ -e "/usr/lib/jvm/java-1.8.0-openjdk" ]
     then
         echo "And yours IS installed there!"
     else
-        echo "Unfortunatelly you don't have it installed at that directory."
+        echo "Unfortunatelly you don't have it installed there."
     fi
 elif [ "$os" == "Darwin" ]
 then
