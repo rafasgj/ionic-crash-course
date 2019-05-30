@@ -21,7 +21,12 @@ then
 fi
 
 run_as_superuser "npm upgrade -g" "upgrade npm"
+if [ "$os" == "Darwin" ]
+then
+    run_as_superuser "npm install -g native-run" "install native-run"
+fi
 run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
+
 echo "Installing toolchain for Ionic development."
 
 [ -d "${TOOLCHAIN}" ] || mkdir -p "${TOOLCHAIN}"
@@ -46,6 +51,10 @@ fi
 # install Cordova
 echo "Installing Cordova."
 run_as_superuser "npm install -g cordova" "install Cordova"
+if [ "$os" == "Darwin" ]
+then
+    run_as_superuser "npm install -g cordova-res" "install Cordova-res"
+fi
 run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fix permissions"
 
 # install Ionic
