@@ -1,8 +1,7 @@
 #!/bin/sh - source'd
 
-. "`dirname "$0"`/functions.sh"
-
 TOOLCHAIN="`pwd`/toolchain"
+os=`uname`
 
 case $os in
     "Linux")
