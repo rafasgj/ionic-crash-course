@@ -21,7 +21,7 @@ then
 fi
 
 run_as_superuser "npm upgrade -g" "upgrade npm"
-
+run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
 echo "Installing toolchain for Ionic development."
 
 [ -d "${TOOLCHAIN}" ] || mkdir -p "${TOOLCHAIN}"
@@ -46,10 +46,12 @@ fi
 # install Cordova
 echo "Installing Cordova."
 run_as_superuser "npm install -g cordova" "install Cordova"
+run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
 
 # install Ionic
 echo "Installing Ionic."
 run_as_superuser "npm install -g ionic" "install Ionic"
+run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
