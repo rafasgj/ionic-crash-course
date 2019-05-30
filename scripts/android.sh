@@ -70,14 +70,11 @@ echo "Downloading Android Bulid Tools"
 echo "Downloading Android Platform"
 "${SDKMANAGER}" 'platforms;android-28'|| exit 1
 
-echo "Downloading Android Image"
+echo "Downloading Android Images"
 bits=`uname -m | grep '_64'`
-if [ -z "$bits" ]
-then
-    AVD_PACKAGE='system-images;android-28;google_apis;x86_64'
-else
-    AVD_PACKAGE='system-images;android-28;google_apis;x86'
-fi
+AVD_PACKAGE='system-images;android-28;google_apis;x86_64'
+"${SDKMANAGER}" "${AVD_PACKAGE}" || exit 1
+AVD_PACKAGE='system-images;android-28;google_apis;x86'
 "${SDKMANAGER}" "${AVD_PACKAGE}" || exit 1
 
 # Install 32-bit libraries.

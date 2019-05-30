@@ -21,6 +21,7 @@ then
 fi
 
 run_as_superuser "npm upgrade -g" "upgrade npm"
+[ "$os" == "Darwin" ] && run_as_superuser "npm install -g native-run" "installing native-run"
 
 echo "Installing toolchain for Ionic development."
 
@@ -46,6 +47,7 @@ fi
 # install Cordova
 echo "Installing Cordova."
 run_as_superuser "npm install -g cordova" "install Cordova"
+run_as_superuser "npm install -g cordova-res" "install Cordova-res"
 
 # install Ionic
 echo "Installing Ionic."
