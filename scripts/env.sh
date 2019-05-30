@@ -1,8 +1,26 @@
-# source it! But it requires the Bash shell.
+#!/bin/sh - source'd
 
-TOOLCHAIN="$(readlink -f "`dirname "$(pwd)/$BASH_SOURCE"`/../toolchain")"
+. "`dirname "$0"`/functions.sh"
 
-# export JAVA_HOME="${TOOLCHAIN}/jdk1.8.0_211"
-export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
-export ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk"
-export PATH=${PATH}:$ANDROID_SDK_ROOT/tools/bin:$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/emulator
+TOOLCHAIN="`pwd`/toolchain"
+
+case $os in
+    "Linux")
+        export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
+    ;;
+    "Darwin")
+        export JAVA_HOME="`/usr/libexec/java_home`"
+    ;;
+    *)
+        echo "Invalid operating system '$os'."
+        return 1
+    ;;
+esac # is ridiculos ;-)
+
+ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
+
+if [ -d ${ANDROID_SDK_ROOT} ]
+then
+    export ANDROID_SDK
+    export PATH=${PATH}:${ANDROID_SDK_ROOT}/tools/bin:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/emulator
+fi

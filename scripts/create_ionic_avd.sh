@@ -6,10 +6,19 @@ then
     exit 1
 fi
 
+BASEDIR=$(pwd)
+
+DOWNLOADS="${BASEDIR}/downloads"
+TOOLCHAIN="${BASEDIR}/toolchain"
+
+ANDROID_SDK="${TOOLCHAIN}/android-sdk"
+ANDROID_TOOLS="${ANDROID_SDK}/tools"
+AVDMANAGER="${ANDROID_TOOLS}/bin/avdmanager"
+
 AVD_PACKAGE="$1"
 
 echo "Creating emulator device."
-echo "no" | avdmanager create avd --package "${AVD_PACKAGE}" --name 'ionic-device' --device "android-28"
+echo "no" | "${AVDMANAGER}" create avd --package "${AVD_PACKAGE}" --name 'ionic-device' --device "1"
 cat >> "${HOME}/.android/avd/ionic-device.avd/config.ini" <<EOF
 hw.lcd.height=1280
 hw.lcd.width=720

@@ -1,94 +1,55 @@
 #!/bin/sh
 
-BASEDIR=$(readlink -f "`dirname $0`/..")
-DOWNLOADS="${BASEDIR}/downloads"
-TOOLCHAIN="${BASEDIR}/toolchain"
-ANDROID_SDK="${BASEDIR}/toolchain/android-sdk"
-ANDROID_TOOLS="${BASEDIR}/toolchain/android-sdk/tools"
-SDKMANAGER="${ANDROID_TOOLS}/bin/sdkmanager"
+. "`dirname "$0"`/functions.sh"
 
-os=`uname`
-bits=`uname -m | grep '_64'`
+BASEDIR="$(pwd)"
+DOWNLOADS="${BASEDIR}/downloads/"
+TOOLCHAIN="${BASEDIR}/toolchain/"
 
-if [ "$os" != "Linux" ]
+if [ "$os" != "Linux" -a "$os" != "Darwin" ]
 then
     echo "This script was not tested under $os."
     exit 1
 fi
 
-if [ ! $EUID == 0 ]
+echo "Updating dependencies."
+if [ "$os" == "Darwin" ]
 then
-    echo "Superuser priviledges required to execute this script."
-    exit 1
+    BREW=`which brew`
+    NPM=`which npm`
+    [ ! -z "$BREW" -a -z "$NPM" ] && $BREW install node
 fi
 
-echo "Updating dependencies."
-npm upgrade -g
-
-echo "You must install a Java JDK version 8 or compatible."
-echo "It is recommended that you use OpenJDK."
-echo "Check its installation to set JAVA_HOME on 'scripts/env.sh'"
-echo 'It might be installed at /usr/lib/jvm/java-1.8.0-openjdk'
-if [ -e "/usr/lib/jvm/java-1.8.0-openjdk" ]
-then
-    echo "And yours IS installed there!"
-else
-    echo "Unfortunatelly you don't have it installed at that directory."
-read "Press <ENTER> to continue..." dummy
+run_as_superuser "npm upgrade -g" "upgrade npm"
 
 echo "Installing toolchain for Ionic development."
 
-[ -d "${TOOLCHAIN}"] || mkdir -p "${TOOLCHAIN}"
-[ -d "${DOWNLOADS}"] || mkdir -p "${DOWNLOADS}"
+[ -d "${TOOLCHAIN}" ] || mkdir -p "${TOOLCHAIN}"
+[ -d "${DOWNLOADS}" ] || mkdir -p "${DOWNLOADS}"
 
-echo "Downloading Android SDK Manager."
-sdk_tools="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
-wget -c "$sdk_tools" -P "${DOWNLOADS}"
-unzip "${DOWNLOADS}/`basename ${sdk_tools}`" -d "${TOOLCHAIN}"
+echo "Starting Android toolchain instalation."
+"${SCRIPTDIR}/android.sh" || exit 1
+echo "Android development toolchain installed."
 
-echo "Downloading Android SDK Tools"
-"${SDKMANAGER}" tools platform-tools
-
-echo "Downloading Android Bulid Tools"
-"${SDKMANAGER}" 'build-tools;28.0.3'
-
-echo "Downloading Android Image"
-if [ -z "$bits" ]
+if [ "$os" == "Darwin" ]
 then
-    AVD_PACKAGE='system-images;android-28;google_apis;x86_64'
-else
-    AVD_PACKAGE='system-images;android-28;google_apis;x86'
+    echo "Verifying macOS/iOS toolchain instalation."
+    XCODE=`which xcode-select`
+    if [ -z "$XCODE" ]
+    then
+        echo "macOS/iOS support not installed. Install Xcode first."
+    else
+        echo "macOS/iOS development toolchain installed."
+    fi
 fi
-"${SDKMANAGER}" "${AVD_PACKAGE}"
-
-# Install 32-bit libraries.
-# if [ ! -z "$bits" ]
-# then
-#     echo "Installing 32-bit libraries."
-#     FEDORA_PACKAGES="glibc.i686 glibc-devel.i686 libstdc++.i686 zlib-devel.i686 \
-# ncurses-devel.i686 libX11-devel.i686 libXrender.i686 libXrandr.i686"
-#     UBUNTU_PACKAGES="lib32z1 lib32ncurses5 lib32bz2-1.0"
-#     if [ -e /etc/redhat-release -o -e /etc/fedora-release ]
-#     then
-#         dnf install -y $FEDORA_PACKAGES
-#     elif [ -e /etc/debian-release ]
-#     then
-#         echo "This script was not tested on Debian based distros."
-#         read -p "ENTER to continue at your own risk, or CTRL-C to abort." dummy
-#         apt-get install -y $UBUNTU_PACKAGES
-#     fi
-# fi
-
-# Create an android virtual device
-"${BASEDIR}/scripts/create_ionic_avd.sh" "${AVD_PACKAGE}"
 
 # install Cordova
 echo "Installing Cordova."
-npm install -g cordova
+run_as_superuser "npm install -g cordova" "install Cordova"
 
 # install Ionic
 echo "Installing Ionic."
-npm install -g ionic
+run_as_superuser "npm install -g ionic" "install Ionic"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
@@ -105,8 +66,11 @@ echo "Close the emulator after you see it running an empty app."
 ionic cordova emulate android
 
 # Only enable iOS on macOS.
-# ionic cordova platform add ios
-# ionic cordova build ios
+if [ "$os" == "Darwin" ]
+then
+    ionic cordova platform add ios
+    ionic cordova build ios
+fi
 
 ionic cordova platform add android
 ionic cordova build android
