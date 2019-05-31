@@ -54,10 +54,8 @@ read dummy
 echo "Downloading Android SDK Manager."
 sdkos=`echo "$os" | tr "[:upper:]" "[:lower:]"`
 sdk_tools="https://dl.google.com/android/repository/sdk-tools-$sdkos-4333796.zip"
-# wget -c "$sdk_tools" -P "${DOWNLOADS}"
 sdk_file="${DOWNLOADS}/`basename ${sdk_tools}`"
-echo "curl -o \"${sdk_file}\" \"$sdk_tools\""
-curl -o "${sdk_file}" "$sdk_tools" || exit 1
+curl -C - -o "${sdk_file}" "$sdk_tools" || exit 1
 [ -d "${ANDROID_SDK_ROOT}" ] || mkdir -p "${ANDROID_SDK_ROOT}" >/dev/null 2>&1
 unzip "${sdk_file}" -d "${ANDROID_SDK_ROOT}" || exit 1
 
