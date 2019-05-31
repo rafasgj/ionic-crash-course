@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 . "`dirname "$0"`/functions.sh"
 
@@ -99,4 +99,3 @@ popd >/dev/null 2>&1
 rm -rf ${PROJECT} ${LOFGILE}
 
 echo "Ionic platform installed."
-
