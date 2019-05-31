@@ -7,8 +7,8 @@ BASEDIR=$(pwd)
 DOWNLOADS="${BASEDIR}/downloads"
 TOOLCHAIN="${BASEDIR}/toolchain"
 
-ANDROID_SDK="${TOOLCHAIN}/android-sdk"
-ANDROID_TOOLS="${ANDROID_SDK}/tools"
+ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk"
+ANDROID_TOOLS="${ANDROID_SDK_ROOT}/tools"
 SDKMANAGER="${ANDROID_TOOLS}/bin/sdkmanager"
 
 echo "Verifying instalation environment."
@@ -58,8 +58,8 @@ sdk_tools="https://dl.google.com/android/repository/sdk-tools-$sdkos-4333796.zip
 sdk_file="${DOWNLOADS}/`basename ${sdk_tools}`"
 echo "curl -o \"${sdk_file}\" \"$sdk_tools\""
 curl -o "${sdk_file}" "$sdk_tools" || exit 1
-mkdir -p "${ANDROID_SDK}" >/dev/null 2>&1
-unzip "${sdk_file}" -d "${ANDROID_SDK}" || exit 1
+[ -d "${ANDROID_SDK_ROOT}" ] || mkdir -p "${ANDROID_SDK_ROOT}" >/dev/null 2>&1
+unzip "${sdk_file}" -d "${ANDROID_SDK_ROOT}" || exit 1
 
 echo "Downloading Android SDK Tools"
 "${SDKMANAGER}" tools platform-tools || exit 1
@@ -98,4 +98,3 @@ AVD_PACKAGE='system-images;android-28;google_apis;x86'
 
 # Create an android virtual device
 "${SCRIPTDIR}/create_ionic_avd.sh" "${AVD_PACKAGE}" || exit 1
-
