@@ -72,10 +72,11 @@ echo "Downloading Android Platform"
 
 echo "Downloading Android Images"
 bits=`uname -m | grep '_64'`
-AVD_PACKAGE='system-images;android-28;google_apis;x86_64'
-"${SDKMANAGER}" "${AVD_PACKAGE}" || exit 1
 AVD_PACKAGE='system-images;android-28;google_apis;x86'
+"${SDKMANAGER}" "${AVD_PACKAGE}_64" || exit 1
 "${SDKMANAGER}" "${AVD_PACKAGE}" || exit 1
+
+[ ! -z "$bits" ] && AVD_PACKAGE="${AVD_PACKAGE}_64"
 
 # Install 32-bit libraries.
 # if [ ! -z "$bits" ]
@@ -97,3 +98,4 @@ AVD_PACKAGE='system-images;android-28;google_apis;x86'
 
 # Create an android virtual device
 "${SCRIPTDIR}/create_ionic_avd.sh" "${AVD_PACKAGE}" || exit 1
+

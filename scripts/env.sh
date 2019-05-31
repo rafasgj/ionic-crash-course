@@ -1,6 +1,10 @@
-#!/bin/sh - source'd
+#!/bin/bash - source'd
 
-TOOLCHAIN="`pwd`/toolchain"
+selfDIR="`dirname ${BASH_SOURCE}`"
+
+. "${selfDIR}/functions.sh"
+
+TOOLCHAIN="`abspath "${selfDIR}/../toolchain"`"
 os=`uname`
 
 case $os in
@@ -16,6 +20,7 @@ case $os in
     ;;
 esac # is ridiculos ;-)
 
+ANDROID_HOME="${TOOLCHAIN}/android-sdk/"
 ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
 
 if [ -d ${ANDROID_SDK_ROOT} ]

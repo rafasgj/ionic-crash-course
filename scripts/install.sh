@@ -64,36 +64,38 @@ run_as_superuser "npm install -g native-run" "install native-run"
 [ -d "${HOME}/.npm" ] && run_as_superuser "chown -R $USER.$GROUP ${HOME}/.npm" "fix permissions"
 
 # Prepare development environment.
+echo "Preparing build environment."
 . "`dirname "$0"`/env.sh"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
-echo "Configuring Ionic."
+LOGFILE="install-test.log"
+echo "Testing project build and run."
+echo "Output will be redirected to '${LOGFILE}'."
+echo "Creating project." | tee ${LOGFILE}
 echo "n" | ionic start "${PROJECT}" blank --type ionic1
 pushd "${PROJECT}" >/dev/null 2>&1
 
-echo "Enabling Android development."
-ionic cordova platform add android
-echo "Building test project for Android."
-ionic cordova build android
-echo "Testing Android project (this will take a looong time.)"
-echo "Close the emulator after you see it running an empty app."
-ionic cordova emulate android
+echo "Enabling Android development." | tee -a ${LOGFILE}
+ionic cordova platform add android >> ${LOGFILE} || exit 1
+echo "Building test project for Android." | tee -a ${LOGFILE}
+ionic cordova build android >> ${LOGFILE} || exit 1
+echo "Testing Android project (this will take a looong time.)" | tee -a ${$LOGFILE}
+echo "Close the emulator after you see it running an empty app." | tee -a ${LOGFILE}
+ionic cordova emulate android --no-native-run >> ${LOGFILE} || exit 1
 
 # Only enable iOS on macOS.
 if [ "$os" == "Darwin" ]
 then
-    ionic cordova platform add ios
-    ionic cordova build ios
+    echo "Adding platform iOS to the project." | tee -a ${LOGFILE}
+    ionic cordova platform add ios >> ${LOGFILE} || exit 1
+    echo "Building test project for iOS" | tee -a ${LOGFILE}
+    ionic cordova build ios >> ${LOGFILE} || exit 1
 fi
-
-ionic cordova platform add android
-ionic cordova build android
-ionic cordova emulate android
 
 # Clean up
 popd >/dev/null 2>&1
-rm -rf ${PROJECT}
+rm -rf ${PROJECT} ${LOFGILE}
 
 echo "Ionic platform installed."
 
