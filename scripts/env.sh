@@ -1,4 +1,4 @@
-#!/bin/bash - source'd
+#!/usr/bin/bash - source'd
 
 selfDIR="`dirname ${BASH_SOURCE}`"
 
