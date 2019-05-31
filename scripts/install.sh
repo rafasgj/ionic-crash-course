@@ -6,26 +6,14 @@ BASEDIR="$(pwd)"
 DOWNLOADS="${BASEDIR}/downloads/"
 TOOLCHAIN="${BASEDIR}/toolchain/"
 
+USER=`id -un`
+GROUP=`id -gn`
+
 if [ "$os" != "Linux" -a "$os" != "Darwin" ]
 then
     echo "This script was not tested under $os."
     exit 1
 fi
-
-echo "Updating dependencies."
-if [ "$os" == "Darwin" ]
-then
-    BREW=`which brew`
-    NPM=`which npm`
-    [ ! -z "$BREW" -a -z "$NPM" ] && $BREW install node
-fi
-
-run_as_superuser "npm upgrade -g" "upgrade npm"
-if [ "$os" == "Darwin" ]
-then
-    run_as_superuser "npm install -g native-run" "install native-run"
-fi
-run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fixing permissions"
 
 echo "Installing toolchain for Ionic development."
 
@@ -38,15 +26,26 @@ echo "Android development toolchain installed."
 
 if [ "$os" == "Darwin" ]
 then
-    echo "Verifying macOS/iOS toolchain instalation."
+    echo "Verifying iOS toolchain instalation."
     XCODE=`which xcode-select`
     if [ -z "$XCODE" ]
     then
-        echo "macOS/iOS support not installed. Install Xcode first."
+        echo "iOS support not installed. Install Xcode to support iOS."
     else
-        echo "macOS/iOS development toolchain installed."
+        echo "iOS development toolchain installed."
     fi
 fi
+
+echo "Updating NPM dependencies."
+if [ "$os" == "Darwin" ]
+then
+    BREW=`which brew`
+    NPM=`which npm`
+    [ ! -z "$BREW" -a -z "$NPM" ] && $BREW install node
+fi
+
+run_as_superuser "npm upgrade -g" "upgrade npm"
+run_as_superuser "npm install -g native-run" "install native-run"
 
 # install Cordova
 echo "Installing Cordova."
@@ -55,12 +54,14 @@ if [ "$os" == "Darwin" ]
 then
     run_as_superuser "npm install -g cordova-res" "install Cordova-res"
 fi
-run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fix permissions"
 
 # install Ionic
 echo "Installing Ionic."
 run_as_superuser "npm install -g ionic" "install Ionic"
-run_as_superuser "chown -R $USER.$GROUP '${HOME}/.npm'" "fix permissions"
+[ -d "${HOME}/.npm" ] && run_as_superuser "chown -R $USER.$GROUP ${HOME}/.npm" "fix permissions"
+
+# Prepare development environment.
+. "`dirname "$0"`/env.sh"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
@@ -92,3 +93,4 @@ popd >/dev/null 2>&1
 rm -rf ${PROJECT}
 
 echo "Ionic platform installed."
+
