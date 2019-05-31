@@ -73,24 +73,25 @@ LOGFILE="install-test.log"
 echo "Testing project build and run."
 echo "Output will be redirected to '${LOGFILE}'."
 echo "Creating project." | tee ${LOGFILE}
-echo "n" | ionic start "${PROJECT}" blank --type ionic1
+echo "This might need to install dependencies and take several minutes." | tee -a ${LOGFILE}
+echo "n" | ionic start "${PROJECT}" blank --type ionic1 >> ${LOGFILE} 2>&1 || exit 1
 pushd "${PROJECT}" >/dev/null 2>&1
 
 echo "Enabling Android development." | tee -a ${LOGFILE}
-ionic cordova platform add android >> ${LOGFILE} || exit 1
+ionic cordova platform add android >> ${LOGFILE} 2>&1 || exit 1
 echo "Building test project for Android." | tee -a ${LOGFILE}
-ionic cordova build android >> ${LOGFILE} || exit 1
+ionic cordova build android >> ${LOGFILE} 2>&1 || exit 1
 echo "Testing Android project (this will take a looong time.)" | tee -a ${$LOGFILE}
 echo "Close the emulator after you see it running an empty app." | tee -a ${LOGFILE}
-ionic cordova emulate android --no-native-run >> ${LOGFILE} || exit 1
+ionic cordova emulate android --no-native-run >> ${LOGFILE} 2>&1 || exit 1
 
 # Only enable iOS on macOS.
 if [ "$os" == "Darwin" ]
 then
     echo "Adding platform iOS to the project." | tee -a ${LOGFILE}
-    ionic cordova platform add ios >> ${LOGFILE} || exit 1
+    ionic cordova platform add ios >> ${LOGFILE} 2>&1 || exit 1
     echo "Building test project for iOS" | tee -a ${LOGFILE}
-    ionic cordova build ios >> ${LOGFILE} || exit 1
+    ionic cordova build ios >> ${LOGFILE} 2>&1 || exit 1
 fi
 
 # Clean up
