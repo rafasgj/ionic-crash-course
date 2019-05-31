@@ -20,11 +20,10 @@ case $os in
     ;;
 esac # is ridiculos ;-)
 
-ANDROID_HOME="${TOOLCHAIN}/android-sdk/"
 ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
 
 if [ -d ${ANDROID_SDK_ROOT} ]
 then
-    export ANDROID_SDK
+    export ANDROID_SDK_ROOT
     export PATH=${PATH}:${ANDROID_SDK_ROOT}/tools/bin:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/emulator
 fi
