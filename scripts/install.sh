@@ -61,6 +61,12 @@ run_as_superuser "npm install -g ionic" "install Ionic"
 echo "Installing native-run."
 run_as_superuser "npm install -g native-run" "install native-run"
 
+if [ "$os" == "Darwin" ]
+then
+    echo "Installing iOS deployment tools."
+    run_as_superuser "npm install -g ios_deploy" "install ios deployment"
+fi
+
 [ -d "${HOME}/.npm" ] && run_as_superuser "chown -R $USER.$GROUP ${HOME}/.npm" "fix permissions"
 
 # Prepare development environment.
