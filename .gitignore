@@ -1,4 +1,9 @@
 /toolchain/
 /downloads/
 /local/
+/MyFirstProject/
 install-test.log
+
+# node.js/npm files
+package-lock.json
+

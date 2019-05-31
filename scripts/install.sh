@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
-. "`dirname "$0"`/functions.sh"
+SCRIPTDIR="`dirname "$0"`"
+
+. "${SCRIPTDIR}/functions.sh"
 
 BASEDIR="$(pwd)"
+
 DOWNLOADS="${BASEDIR}/downloads/"
 TOOLCHAIN="${BASEDIR}/toolchain/"
 
 USER=`id -un`
 GROUP=`id -gn`
+
+os=`uname`
 
 if [ "$os" != "Linux" -a "$os" != "Darwin" ]
 then
@@ -49,9 +54,10 @@ run_as_superuser "npm upgrade -g" "upgrade npm"
 # install Cordova
 echo "Installing Cordova."
 run_as_superuser "npm install -g cordova" "install Cordova"
+# TODO: failed due to EACCESS
 if [ "$os" == "Darwin" ]
 then
-    run_as_superuser "npm install -g cordova-res" "install Cordova-res"
+    run_as_superuser "npm install --unsafe-perm=true -g cordova-res" "install Cordova-res"
 fi
 
 # install Ionic
@@ -63,15 +69,25 @@ run_as_superuser "npm install -g native-run" "install native-run"
 
 if [ "$os" == "Darwin" ]
 then
-    echo "Installing iOS deployment tools."
-    run_as_superuser "npm install -g ios_deploy" "install ios deployment"
+    run_as_superuser "npm install -g ios-sim" "install ios-sim"
+    run_as_superuser "npm install --unsafe-perm=true -g ios-deploy" "install ios-deploy"
 fi
 
-[ -d "${HOME}/.npm" ] && run_as_superuser "chown -R $USER.$GROUP ${HOME}/.npm" "fix permissions"
+case "$os" in
+    "Linux") USERGROUP="$USER.$GROUP"
+    ;;
+    "Darwin") USERGROUP="$USER"
+    ;;
+    *) echo "Invalid operating system: $os"
+    exit 1
+    ;;
+esac # is ridiculous ;-)
+
+[ -d "${HOME}/.npm" ] && run_as_superuser "chown -R "$USERGROUP" ${HOME}/.npm" "fix permissions"
 
 # Prepare development environment.
 echo "Preparing build environment."
-. "`dirname "$0"`/env.sh"
+. "${SCRIPTDIR}/env.sh"
 
 # Create a dummy project to configure Ionic.
 PROJECT="MyFirstProject"
@@ -80,14 +96,14 @@ echo "Testing project build and run."
 echo "Output will be redirected to '${LOGFILE}'."
 echo "Creating project." | tee ${LOGFILE}
 echo "This might need to install dependencies and take several minutes." | tee -a ${LOGFILE}
-echo "n" | ionic start "${PROJECT}" blank --type ionic1 >> ${LOGFILE} 2>&1 || exit 1
+echo "n" | ionic start "${PROJECT}" blank >> ${LOGFILE} 2>&1 || exit 1
 pushd "${PROJECT}" >/dev/null 2>&1
 
 echo "Enabling Android development." | tee -a ${LOGFILE}
 ionic cordova platform add android >> ${LOGFILE} 2>&1 || exit 1
 echo "Building test project for Android." | tee -a ${LOGFILE}
 ionic cordova build android >> ${LOGFILE} 2>&1 || exit 1
-echo "Testing Android project (this will take a looong time.)" | tee -a ${$LOGFILE}
+echo "Testing Android project (this might take a looong time.)" | tee -a ${$LOGFILE}
 echo "Close the emulator after you see it running an empty app." | tee -a ${LOGFILE}
 ionic cordova emulate android --no-native-run >> ${LOGFILE} 2>&1 || exit 1
 
@@ -96,8 +112,12 @@ if [ "$os" == "Darwin" ]
 then
     echo "Adding platform iOS to the project." | tee -a ${LOGFILE}
     ionic cordova platform add ios >> ${LOGFILE} 2>&1 || exit 1
+    ionic cordova prepare ios >> ${LOGFILE} 2>&1 || exit 1
     echo "Building test project for iOS" | tee -a ${LOGFILE}
     ionic cordova build ios >> ${LOGFILE} 2>&1 || exit 1
+    echo "Testing iOS project (this might take a looong time.)" | tee -a ${LOGFILE}
+    echo "Close the emulator after you see it running an empty app." | tee -a ${LOGFILE}
+    ionic cordova emulate ios --no-native-run >> ${LOGFILE} 2>&1 || exit 1
 fi
 
 # Clean up

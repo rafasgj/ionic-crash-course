@@ -1,6 +1,9 @@
 #!/bin/sh
 
-. "`dirname "$0"`/functions.sh"
+SCRIPTDIR=`dirname "$0"`
+. "${SCRIPTDIR}/functions.sh"
+
+os=`uname`
 
 BASEDIR=$(pwd)
 
@@ -55,9 +58,9 @@ echo "Downloading Android SDK Manager."
 sdkos=`echo "$os" | tr "[:upper:]" "[:lower:]"`
 sdk_tools="https://dl.google.com/android/repository/sdk-tools-$sdkos-4333796.zip"
 sdk_file="${DOWNLOADS}/`basename ${sdk_tools}`"
-curl -C - -o "${sdk_file}" "$sdk_tools" || exit 1
+curl -o "${sdk_file}" "$sdk_tools" || exit 1
 [ -d "${ANDROID_SDK_ROOT}" ] || mkdir -p "${ANDROID_SDK_ROOT}" >/dev/null 2>&1
-unzip -o -f "${sdk_file}" -d "${ANDROID_SDK_ROOT}" || exit 1
+unzip "${sdk_file}" -d "${ANDROID_SDK_ROOT}" || exit 1
 
 echo "Downloading Android SDK Tools"
 "${SDKMANAGER}" tools platform-tools || exit 1

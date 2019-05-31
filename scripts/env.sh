@@ -1,11 +1,11 @@
 #!/usr/bin/bash - source'd
 
-selfDIR="`dirname ${BASH_SOURCE}`"
+selfDIR="`dirname "${BASH_SOURCE}"`"
 
 . "${selfDIR}/functions.sh"
 
 TOOLCHAIN="`abspath "${selfDIR}/../toolchain"`"
-os=`uname`
+    os=`uname`
 
 case $os in
     "Linux")
