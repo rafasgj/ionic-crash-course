@@ -5,12 +5,26 @@ Este repositório contém o material utilizado no Ionic Crash Course,
 ministrado na Jornada Acadêmica da Escola Politécnica da PUC-RS, em
 Julho de 2019.
 
-## Conteúdo
+## Scripts
 
-O diretório `scripts` contém uma coleção de _scripts_ que auxilia na
-instalação e configuração do Ionic para desenvolvimento. Os _scripts_
-foram testados utilizando a distribuição Linux Fedora, versão 27.
+O diretório `scripts` contém uma série de _scripts_ que auxiliam na
+instalação e uso do Ionic:
+    * **install.sh** instala os pacotes necessários ao desenvolvimento
+    com o Ionic. Pode ser utilizado tanto em Linux quanto em macOS.
+    * **android.sh** instala os pacotes necessários ao desenvolvimento
+    para Android com o Ionic e pode ser utilizado tanto em Linux quanto em
+    macOS. O _script_ não instala o Java JDK, porém tenta identificar a JVM
+    instalada. Em Linux, também não é instalado o Gradle. No macOS, se o
+    [Homebrew](https://brew.sh) estiver instalado, ele é utilizado para
+    instalar o Gradle.
+    * **functions.sh** contém algumas funções utilizadas pelos outros
+    _scripts_.
+    * **env.sh** é um _script_ que exporta as variáveis necessárias para o
+    desenvolvimento com Ionic, e pode ser utilizado após a instalação para
+    configurar o ambiente de desenvolvimento. Requer o uso do Bash, via
+    _source_.
 
-O diretório `docs` contém documentos, _slides_, e imagens, apresentados
-no curso. Todos os slides foram criados utilizando o
-[KeynoteC](https://github.com/rafasgj/keynotec).
+## Documentos
+
+O diretório `docs` contém os _slides_ e imagens, apresentados no curso. Todos
+os slides foram com o [KeynoteC](https://github.com/rafasgj/keynotec).
