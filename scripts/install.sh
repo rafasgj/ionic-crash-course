@@ -45,7 +45,6 @@ then
 fi
 
 run_as_superuser "npm upgrade -g" "upgrade npm"
-run_as_superuser "npm install -g native-run" "install native-run"
 
 # install Cordova
 echo "Installing Cordova."
@@ -58,6 +57,10 @@ fi
 # install Ionic
 echo "Installing Ionic."
 run_as_superuser "npm install -g ionic" "install Ionic"
+
+echo "Installing native-run."
+run_as_superuser "npm install -g native-run" "install native-run"
+
 [ -d "${HOME}/.npm" ] && run_as_superuser "chown -R $USER.$GROUP ${HOME}/.npm" "fix permissions"
 
 # Prepare development environment.
