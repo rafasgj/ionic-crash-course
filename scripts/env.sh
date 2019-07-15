@@ -20,7 +20,6 @@ case "`uname`" in
 esac # is ridiculos ;-)
 
 ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
-ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
 
 if [ -d ${ANDROID_SDK_ROOT} ]
 then
