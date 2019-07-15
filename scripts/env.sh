@@ -5,9 +5,8 @@ selfDIR="`dirname "${BASH_SOURCE}"`"
 . "${selfDIR}/functions.sh"
 
 TOOLCHAIN="`abspath "${selfDIR}/../toolchain"`"
-    os=`uname`
 
-case $os in
+case "`uname`" in
     "Linux")
         export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
     ;;
@@ -20,6 +19,7 @@ case $os in
     ;;
 esac # is ridiculos ;-)
 
+ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
 ANDROID_SDK_ROOT="${TOOLCHAIN}/android-sdk/"
 
 if [ -d ${ANDROID_SDK_ROOT} ]
