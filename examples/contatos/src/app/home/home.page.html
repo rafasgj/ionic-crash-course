@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Lista de Contatos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item-group *ngFor="let contato of contatosService.contatos">
+            <ion-item-divider>
+               <ion-label>{{contato.name}}</ion-label>
+            </ion-item-divider>
+            <ion-item *ngFor="let phone of contato.phones">
+                <h2>{{phone}}</h2>
+            </ion-item>
+        </ion-item-group>
+    </ion-list>
+</ion-content>
