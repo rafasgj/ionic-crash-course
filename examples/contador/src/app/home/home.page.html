@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Contador de Cliques!
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div style="display:block; width:100%; text-align:center">
+        <h1>Clicked {{this.counter}} times.</h1>
+        <ion-button (click)="increaseCounter()">
+            <ion-icon slot="icon-only" name="cafe"></ion-icon>
+        </ion-button>
+    </div>
+</ion-content>
