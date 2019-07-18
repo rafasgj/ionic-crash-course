@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Paradas de Ônibus
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div ion-padding>
+        <ion-list *ngIf="datapoa.stops">
+            <ion-item-group *ngFor="let stop of datapoa.stops">
+                <ion-item-divider style="background-color: #eec">
+                    <ion-label>
+                        <ion-icon style="color:#35f;" name="bus"></ion-icon>
+                        <span style="color:#888;margin-left:10px;">Parada {{stop.codigo}}</span>
+                    </ion-label>
+                </ion-item-divider>
+                <ion-item *ngFor="let linha of stop.linhas">
+                    <p style="font-size:80%">{{linha.codigo}} - {{linha.nome}}</p>
+                </ion-item>
+            </ion-item-group>
+        </ion-list>
+    </div>
+</ion-content>
