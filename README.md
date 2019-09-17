@@ -7,24 +7,26 @@ Julho de 2019.
 
 ## Scripts
 
-O diretório `scripts` contém uma série de _scripts_ que auxiliam na
+O diretório `scripts` contém uma série de __scripts__ que auxiliam na
 instalação e uso do Ionic:
-    * **install.sh** instala os pacotes necessários ao desenvolvimento
+    * *install.sh* instala os pacotes necessários ao desenvolvimento
     com o Ionic. Pode ser utilizado tanto em Linux quanto em macOS.
-    * **android.sh** instala os pacotes necessários ao desenvolvimento
+    * *android.sh* instala os pacotes necessários ao desenvolvimento
     para Android com o Ionic e pode ser utilizado tanto em Linux quanto em
-    macOS. O _script_ não instala o Java JDK, porém tenta identificar a JVM
-    instalada. Em Linux, também não é instalado o Gradle. No macOS, se o
-    [Homebrew](https://brew.sh) estiver instalado, ele é utilizado para
+    macOS. O __script__ não instala o Java JDK, porém tenta identificar a
+    JVM instalada. Em Linux, também não é instalado o Gradle. No macOS, se
+    o [Homebrew](https://brew.sh) estiver instalado, ele é utilizado para
     instalar o Gradle.
-    * **functions.sh** contém algumas funções utilizadas pelos outros
+    * *functions.sh* contém algumas funções utilizadas pelos outros
     _scripts_.
-    * **env.sh** é um _script_ que exporta as variáveis necessárias para o
-    desenvolvimento com Ionic, e pode ser utilizado após a instalação para
-    configurar o ambiente de desenvolvimento. Requer o uso do Bash, via
-    _source_.
+    * *env.sx* é um __script__ que exporta as variáveis necessárias para
+    o desenvolvimento com Ionic, e pode ser utilizado após a instalação
+    para configurar o ambiente de desenvolvimento. Requer o uso do Bash,
+    via __source__.
+    * *create_ionic_avd.sh* cria um dispositivo virtual Android utilizando
+    o Android Studio.
 
 ## Documentos
 
-O diretório `docs` contém os _slides_ e imagens, apresentados no curso. Todos
-os slides foram com o [KeynoteC](https://github.com/rafasgj/keynotec).
+O diretório `docs` contém os _slides_ e imagens, apresentados no curso.
+Todos os slides foram com o [KeynoteC](https://github.com/rafasgj/keynotec).
