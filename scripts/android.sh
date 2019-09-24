@@ -32,6 +32,10 @@ then
         echo "And yours IS installed there!"
     else
         echo "Unfortunatelly you don't have it installed there."
+	if [ -e "${JAVA_HOME}" ]
+	then
+	    echo "But it seems you have it at ${JAVA_HOME}."
+	fi
     fi
 elif [ "$os" == "Darwin" ]
 then

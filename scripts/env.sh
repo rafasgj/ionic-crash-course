@@ -8,10 +8,11 @@ TOOLCHAIN="`abspath "${selfDIR}/../toolchain"`"
 
 case "`uname`" in
     "Linux")
-        export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
+	LOCAL_JAVA="/usr/lib/jvm/java-1.8.0-openjdk"
+        [ -z "$JAVA_HOME" ] && export JAVA_HOME="$LOCAL_JAVA"
     ;;
     "Darwin")
-        export JAVA_HOME="`/usr/libexec/java_home`"
+        [ -z "$JAVA_HOME" ] && export JAVA_HOME="`/usr/libexec/java_home`"
     ;;
     *)
         echo "Invalid operating system '$os'."

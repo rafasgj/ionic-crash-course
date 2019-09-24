@@ -30,3 +30,8 @@ instalação e uso do Ionic:
 
 O diretório `docs` contém os _slides_ e imagens, apresentados no curso.
 Todos os slides foram com o [KeynoteC](https://github.com/rafasgj/keynotec).
+
+## Instalação
+
+Execute `scripts/install.sh` e siga as instruções na tela. O uso desse
+script supõe que você não possui o Android Studio instalado.
