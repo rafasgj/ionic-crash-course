@@ -96,7 +96,7 @@ echo "Testing project build and run."
 echo "Output will be redirected to '${LOGFILE}'."
 echo "Creating project." | tee ${LOGFILE}
 echo "This might need to install dependencies and take several minutes." | tee -a ${LOGFILE}
-echo "n" | ionic start "${PROJECT}" blank >> ${LOGFILE} 2>&1 || exit 1
+echo "n" | ionic start --type=angular "${PROJECT}" blank >> ${LOGFILE} 2>&1 || exit 1
 pushd "${PROJECT}" >/dev/null 2>&1
 
 echo "Enabling Android development." | tee -a ${LOGFILE}
