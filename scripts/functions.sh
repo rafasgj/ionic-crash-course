@@ -27,3 +27,8 @@ run_as_superuser() {
     fi
 
 }
+
+optional() {
+    $($*)
+    return $?
+}
