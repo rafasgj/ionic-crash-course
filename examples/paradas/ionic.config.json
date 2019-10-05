@@ -1,5 +1,7 @@
 {
   "name": "paradas",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
